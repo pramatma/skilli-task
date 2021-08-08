@@ -29,13 +29,13 @@ public class JwtController {
 	
 	@PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest jwtRequest) throws Exception {
-		System.out.println("jwt authentication :"+ jwtRequest);
 		try {
+			System.out.println(" request body username :"+ jwtRequest.getUsername() +" password : "+jwtRequest.getPassword());
 			this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(), jwtRequest.getPassword()));
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			throw new Exception("Invalid credentials ......");
+			throw e;
 		}
 		/** if authentication done then only below code will execute **/
 		System.out.print(" user details username : "+ jwtRequest.getUsername());

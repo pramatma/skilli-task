@@ -3,11 +3,8 @@ package com.skilli.application.authentication.utils;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -29,21 +26,21 @@ public class JwtUtils {
 	
 	private String SECRET_KEY = "secret";
 
-//    public String extractUsername(String token) {
-//        return extractClaim(token, Claims::getSubject);
-//    }
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
 //
 //    public Date extractExpiration(String token) {
 //        return this.extractClaim(token, Claims::getExpiration);
 //    }
 //
-//    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-//        final Claims claims = extractAllClaims(token);
-//        return claimsResolver.apply(claims);
-//    }
-//    private Claims extractAllClaims(String token) {
-//        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-//    }
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+    }
 //
 //    private Boolean isTokenExpired(String token) {
 //        return extractExpiration(token).before(new Date());

@@ -17,7 +17,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username){
 		Users user = userServices.findByUsername(username);
-		return new UserDetailsImp(user);
+		// return new UserDetailsImp(user);
+		UserDetails userdetails = new UserDetailsImp(user);
+		System.out.println("user authorities : "+userdetails.getAuthorities());
+		return userdetails;
 	}
 
 }

@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.skilli.application.authentication.services.CustomUserDetailsService;
 
@@ -21,6 +22,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
 	
+	@Autowired
+	JwtAuthentication jwtAuthentication;
+	
 	@Override
 	public void configure(AuthenticationManagerBuilder auth ) throws Exception {
 		auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
@@ -29,12 +33,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		.cors().and().csrf()
-		.disable()
+		.cors().and().csrf().disable()
+		/** cross origin resource sharing & cross site scripting*/
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-		.authorizeRequests().antMatchers("/login").permitAll()
+		.authorizeRequests()
+		.antMatchers("/api/v1/admin/add-games").hasAuthority("ADMIN")
+		.antMatchers("/login").permitAll()
 		.antMatchers("/api/v1/register").permitAll()
 		.anyRequest().authenticated();
+		
+		http.addFilterBefore(jwtAuthentication, UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	@Bean

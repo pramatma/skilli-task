@@ -21,23 +21,27 @@ public class Users {
 	@Column(name="name")
 	private String name;
 	
-	@Column(name="username")
+	@Column(name="username", unique=true, length=10)
 	private String username;
 	
 	@Column(name="password")
 	private String password;
+	
+	@Column(name="role")
+	private String role;
 	
 	public Users() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Users(String email, String name, String username, String password) {
+	public Users(String email, String name, String username, String password, String role) {
 		super();
 		this.email = email;
 		this.name = name;
 		this.username = username;
 		this.password = password;
+		this.role = role;
 	}
 
 	public int getId() {
@@ -78,6 +82,14 @@ public class Users {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	@Override
